@@ -1,19 +1,20 @@
 ﻿using Minimal.Auth.Api.Domain.Base;
 using Minimal.Auth.Api.Domain.Customer.Enums;
+using Minimal.Auth.Api.Domain.Customer.VO;
 
 namespace Minimal.Auth.Api.Domain.Customer.Entities
 {
     public class Account : Entity<Guid>
     {
-        private Account(Guid id, User user, AccountTypes type) : base(id)
+        private Account(Guid id, User user, Profiles profile) : base(id)
         {
-            this.UserId = user.Id;
-            this.User = user;
-            this.ContactEmail = user.Email;
-            this.AccountType = type;
+            UserId = user.Id;
+            User = user;
+            ContactEmail = user.Email;
+            Profile = Profile.Create(profile);
         }
 
-        public static Account Create(AccountTypes type, string email, string password)
+        public static Account Create(Profiles type, string email, string password)
         {
             var user = User.Create(Guid.NewGuid(), email, password);
 
@@ -21,7 +22,7 @@ namespace Minimal.Auth.Api.Domain.Customer.Entities
         }
 
         public string ContactEmail { get; set; }
-        public AccountTypes AccountType { get; set; }
+        public Profile Profile { get; set; }
 
         public string Name { get; set; }
         public string Address { get; set; }
